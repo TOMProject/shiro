@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<!-- <mapper namespace="com.shiro.mapper.UsersMapper">
+	<resultMap id ="BaseResultMap" type="com.shiro.entity.Users">
+		<id column="id" property="id" jdbcType="INTEGER"/>
+		<result column="username" property="userName" jdbcType="VARCHAR"/>
+		<result column="password" property="passWord" jdbcType="VARCHAR"/>
+	</resultMap>
+	
+	<select id="selctListSelictive" resultMap="BaseResultMap" parameterType="com.shiro.entity.Users">
+		select * from Users 
+		<where>
+			<if test="id != null">
+				and id = #{id,jdbcType=INTEGER}
+			</if>
+			<if test="userName != null">
+				and username = #{userName,jdbcType=VARCHAR}
+			</if>
+			<if test="passWord != null">
+				and password = #{passWord,jdbcType=VARCHAR}
+			</if>
+		</where>
+	
+	</select>
+
+</mapper> -->
