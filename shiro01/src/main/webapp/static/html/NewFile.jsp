@@ -26,7 +26,7 @@
         <ul>
             <li><span>用户名</span>&nbsp;<input type="text" class="loginuser" id="name" name="loginId" value=""></li>
             <li><span>密&nbsp;&nbsp;&nbsp;&nbsp;码</span>&nbsp;<input type="text" class="loginpwd" id="password" name="password" value=""></li>
-            <li><button class="loginbtn" onclick="login()">登录</button>
+            <li><button class="loginbtn">登录</button>
                 <button class="logincancel">取消</button>
             </li>
             <li><a href="#" class="register">注册</a><a href="#" class="forgetpwd">忘记密码</a></li>

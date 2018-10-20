@@ -6,6 +6,7 @@ import org.apache.shiro.authc.UnknownAccountException;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -21,10 +22,10 @@ public class ShiroController {
 
 	@RequestMapping(value = "/login",method=RequestMethod.POST)
 	@ResponseBody
-	public AjaxResponse<Users> doLogin(@RequestParam("username") String username,@RequestParam("password") String password) {
+	public AjaxResponse<Users> doLogin(@RequestBody Users users) {
 		AjaxResponse<Users> ajaxResponse = new AjaxResponse<Users>(Constant.RS_CODE_ERROR,"登录失败！");
 		// 手动设置用户名和密码，这里的用户名和密码和shiro.ini 配置文件里面的用户名和密码进行比较，
-		UsernamePasswordToken token = new UsernamePasswordToken(username, password);
+		UsernamePasswordToken token = new UsernamePasswordToken(users.getUserName(), users.getPassWord());
 		//token.setRememberMe(true);//是否记住登录
 		Subject user = SecurityUtils.getSubject();
 		try {
@@ -43,7 +44,7 @@ public class ShiroController {
 		}
 		ajaxResponse.setCode(Constant.RS_CODE_SUCCESS);
 		ajaxResponse.setMsg("登录成功！");
-		ajaxResponse.setData((Users)user);
+		ajaxResponse.setData(users);
 		return ajaxResponse;
 		
 	}
