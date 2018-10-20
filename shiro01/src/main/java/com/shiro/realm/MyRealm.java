@@ -10,6 +10,7 @@ import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.PrincipalCollection;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.shiro.entity.Users;
 import com.shiro.service.UsersService;
@@ -20,7 +21,7 @@ import com.shiro.service.UsersService;
  */
 public class MyRealm extends AuthorizingRealm {
 
-	//@Autowired
+	@Autowired
 	UsersService usersSer;
 	
 	

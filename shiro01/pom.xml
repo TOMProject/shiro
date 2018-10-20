@@ -135,7 +135,7 @@
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-test</artifactId>
-			<version>4.1.2.RELEASE</version>
+			<version>${spring.version}</version>
 			<scope>test</scope>
 		</dependency>
 		
@@ -175,12 +175,22 @@
 			<artifactId>aspectjweaver</artifactId>
 			<version>1.8.6</version>
 		</dependency>
-
+		
+		<!--swagger - ui  -->
+		<dependency>
+		    <groupId>io.springfox</groupId>
+		    <artifactId>springfox-swagger2</artifactId>
+		     <version>2.6.0</version>
+		</dependency>
+		<dependency>
+		    <groupId>io.springfox</groupId>
+		    <artifactId>springfox-swagger-ui</artifactId>
+		    <version>2.6.0</version>
+		</dependency>
 	</dependencies>
 
 	<build>
 		<finalName>shiro01</finalName>
-
 		<plugins>
 
 			<plugin>
@@ -192,7 +202,6 @@
 					<source>1.8</source>
 					<target>1.8</target>
 					<showDeprecation>false</showDeprecation>
-
 				</configuration>
 			</plugin>
 		</plugins>

@@ -24,9 +24,9 @@
 	http://www.springframework.org/schema/cache
     http://www.springframework.org/schema/cache/spring-cache.xsd">
 
-	<!--  <context:component-scan base-package="com.shiro.*"/> -->
+	<context:component-scan base-package="com.shiro.*"/>  
 	
-	<!--<aop:aspectj-autoproxy proxy-target-class="true" />
+	<aop:aspectj-autoproxy proxy-target-class="true" />
 	
 	<context:property-placeholder location="classpath:jdbc.properties"/>
 	<bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource">
@@ -37,23 +37,23 @@
 		 <property name="initialSize" value="20" />  
         <property name="minIdle" value="20" />  
         <property name="maxActive" value="100" />  
-        配置获取连接等待超时的时间  
+        <!-- 配置获取连接等待超时的时间   -->
         <property name="maxWait" value="60000" />  
-        配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒  
+        <!-- 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒 -->  
         <property name="timeBetweenEvictionRunsMillis" value="3600000" />  
-        配置一个连接在池中最小生存的时间，单位是毫秒  
+        <!-- 配置一个连接在池中最小生存的时间，单位是毫秒 -->  
         <property name="minEvictableIdleTimeMillis" value="300000" />  
-        打开PSCache，并且指定每个连接上PSCache的大小  
+        <!-- 打开PSCache，并且指定每个连接上PSCache的大小   -->
         <property name="poolPreparedStatements" value="true" />  
         <property name="maxPoolPreparedStatementPerConnectionSize" value="20" /> 
         
         <property name="defaultAutoCommit" value="false" />
-          注意如果要用log4j一定要加上log4j
+         <!--  注意如果要用log4j一定要加上log4j -->
         <property name="filters" value="stat,log4j" /> 
 	</bean>
 
 	
-	MyBatis配置
+	<!--MyBatis配置 -->
 	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
 		<property name="dataSource" ref="dataSource" />
 		<property name="configLocation" value="classpath:mybatis-config.xml" />
@@ -63,7 +63,7 @@
 	<bean id="sqlSessionTemplate" class="org.mybatis.spring.SqlSessionTemplate">
 		<constructor-arg index="0" ref="sqlSessionFactory" />
 	</bean>
-	配置mybatis mapper接口
+	<!-- 配置mybatis mapper接口 -->
 	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
 		<property name="basePackage" value="com.shiro.mapper" />
 		<property name="sqlSessionTemplateBeanName" value="sqlSessionTemplate" />
@@ -71,13 +71,13 @@
 	 
 	
 
-	JDBC事务
+	<!-- JDBC事务 -->
 	<bean id="transactionManager"
 		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
 		<property name="dataSource" ref="dataSource" />
 	</bean>
   
-	定义通知  
+<!-- 	定义通知 -->  
 	<tx:advice id="txAdvice" transaction-manager="transactionManager">
 		<tx:attributes>
 			<tx:method name="find*" read-only="true" />
@@ -87,27 +87,22 @@
 		</tx:attributes>
 	</tx:advice> 
 	
-   开启注解式事务控制
+<!--    开启注解式事务控制 -->
 	<tx:annotation-driven transaction-manager="transactionManager" />
 
-定义AOP切面处理器
+<!-- 定义AOP切面处理器 -->
 	<aop:config proxy-target-class="true">
 		<aop:pointcut id="interceptorPointCuts"
 			expression="execution(* com.shiro.service.impl.*.*(..))" />
 		<aop:advisor advice-ref="txAdvice" pointcut-ref="interceptorPointCuts" />
 	</aop:config>
-	开启事务注解
+	<!-- 开启事务注解 -->
 	<task:annotation-driven />
 	<context:annotation-config/>
 	<bean class="org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor" />
- -->
+
  
- 
- 
- 
- 
- 
- 
+
 	<!-- security安全管理器 -->
 	<bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
 		<property name="realm" ref="myRealm" />
@@ -134,7 +129,15 @@
 		<!-- Shiro连接约束配置,即过滤链的定义 -->
 		<property name="filterChainDefinitions">
 			<value>
-				/**=anon  
+			 <!-- anon无权限访问请求，此处是登录页面和登录请求 -->  
+				/user/login=anon
+				/static/**=anon
+				 <!-- 需要权限为add的用户才能访问此请求-->  
+                /user/add=perms[user:add]  
+                <!-- 需要管理员角色才能访问此页面 -->  
+                /user/delelte=roles[admin] 
+                <!--拦截非静态资源的所有请求-->   
+				/**=authc
 			</value>
 		</property>
 	</bean>

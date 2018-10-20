@@ -1,0 +1,73 @@
+*{
+   margin: 0;
+   padding: 0; 
+}
+
+li{
+    list-style: none
+}
+
+.loginbox{  
+    width:670px;
+    height: 366px;
+    /* text-align: center; 让div内部文字居中 */
+    margin: auto;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: url(../images/logininfo2.png);
+    border:1px solid #F00;
+}
+.loginbox ul {
+    margin-top: 80px;
+
+}
+
+.loginbox ul li {
+    margin-bottom: 25px;
+    margin-left: 270px;
+}
+.loginuser {
+    background-image: url(../images/loginuser.png);
+    width: 250px;
+    height: 40px;
+    /* padding-left: 44px; */
+    text-indent: 40px;
+
+}
+.loginpwd {
+    background-image: url(../images/loginpassword.png);
+    width: 250px;
+    height: 40px;
+    text-indent: 40px;
+}
+.loginbtn {
+    background-color: royalblue;
+    border-radius: 8px;
+    margin-left: 40px;
+    width: 90px;
+    height: 40px;
+}
+.logincancel {
+    background-color: cornsilk;
+    border-radius: 8px;
+    margin-left: 60px;
+    width: 90px;
+    height: 40px;
+}
+ul li a {
+    color:royalblue;
+    text-decoration: none
+
+}
+ul li a:hover{
+    color:red;
+}
+.register{
+   margin-left: 65px; 
+}
+.forgetpwd{
+    margin-left: 110px;
+}
