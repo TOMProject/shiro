@@ -121,7 +121,7 @@
 		<!-- Shiro的核心安全接口,这个属性是必须的 -->
 		<property name="securityManager" ref="securityManager" />
 		<!-- 身份认证失败，则跳转到登录页面的配置 -->
-		<property name="loginUrl" value="/login.jsp" />
+		<property name="loginUrl" value="/static/html/login.html" />
 		<!-- 登录成功挑转的页面 -->
 		<property name="successUrl" value="/success.jsp" />
 		<!-- 权限认证失败，则跳转到指定页面 -->
