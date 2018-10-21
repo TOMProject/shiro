@@ -110,7 +110,18 @@
 		<property name="cacheManager" ref="cacheManager"/>
 	</bean>
 <!-- 	自定义Realm -->
-	<bean id="myRealm" class="com.shiro.realm.MyRealm" />
+	<bean id="myRealm" class="com.shiro.realm.MyRealm" >
+	 	<property name="credentialsMatcher"> 
+	 		<bean class="org.apache.shiro.authc.credential.HashedCredentialsMatcher"> 
+		 	<!-- 加密的方式 --> 
+			 <constructor-arg index="0" type="java.lang.String" value="MD5" /> 
+			 <!-- 加密的次数，默认是1次 --> 
+			 <property name="hashIterations" value="1024"/> 
+			 </bean> 
+	 	</property>
+	 </bean> 
+
+
 	<!-- 缓存管理器 -->
 	<bean id="cacheManager" class="org.apache.shiro.cache.ehcache.EhCacheManager">
 		<property name="cacheManagerConfigFile" value="classpath:shiro-ehcache.xml" />

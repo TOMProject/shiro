@@ -7,9 +7,11 @@ import org.apache.shiro.authc.AuthenticationToken;
 import org.apache.shiro.authc.SimpleAuthenticationInfo;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.authz.AuthorizationInfo;
+import org.apache.shiro.crypto.hash.SimpleHash;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.PrincipalCollection;
+import org.apache.shiro.util.ByteSource;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.shiro.entity.Users;
@@ -41,7 +43,7 @@ public class MyRealm extends AuthorizingRealm {
 		String username = token.getUsername();
 		String password = String.valueOf(token.getPassword());
 		Users user = new Users();
-		user.setPassWord(password);
+		//user.setPassWord(password);
 		user.setUserName(username);
 		Users u = usersSer.selctListSelictive(user);
 		if(u == null) {
@@ -51,9 +53,21 @@ public class MyRealm extends AuthorizingRealm {
 		Session session = SecurityUtils.getSubject().getSession();
 		session.setAttribute(SESSION_KEY, session);
 		String name = this.getName();
-		//Object principal = authenticationToken.getPrincipal(); 
-		SimpleAuthenticationInfo sim = new SimpleAuthenticationInfo(u,u.getPassWord(), name);
+		ByteSource credentialsSalt = ByteSource.Util.bytes(username);//加盐
+		SimpleAuthenticationInfo sim = new SimpleAuthenticationInfo(username,u.getPassWord(),credentialsSalt, name);
 		return sim;
+	}
+	
+	
+	
+	public static void main(String[] args) {
+	       String hashAlgorithmName = "MD5";
+	        String credentials = "123456";//密码
+	        int hashIterations = 1024;
+	        ByteSource credentialsSalt = ByteSource.Util.bytes("admin");//盐值
+	        Object obj = new SimpleHash(hashAlgorithmName, credentials, credentialsSalt, hashIterations);
+	        System.out.println(obj);
+
 	}
 	
 }
