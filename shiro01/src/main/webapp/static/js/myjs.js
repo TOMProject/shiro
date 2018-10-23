@@ -2,7 +2,25 @@
 $(function(){
 	//初始用户页面调用的请求
 	var user = {};
+	initPaging(user)
+	
+	$(".btn").click(function(){
+		alert(22)
+		var username = $("#username").val();
+		var phone = $("#phone").val();
+		var user = {"userName":username,"phone":phone}
+		initPaging(user)	
+	});
+	
+});
+
+
+
+
+function initPaging(user){
+	
 	 var json = JSON.stringify(user);
+	 alert(json)
 	 $.ajax({
 	        type:"POST",
 	        url:"../../user/listPaging",
@@ -26,34 +44,12 @@ $(function(){
 					var str2="</tr>";
 					str += str1+str2	
 				}
-				
 				alert(str);
 				$('.userListPaging').append(str);
 			}	       
 	    });
-});
+	
+}
 
-function login(){
 
-    var loginName =  document.getElementById("name").value;
-    var loginPwd = document.getElementById("password").value;
-    var user = {"userName":loginName,"passWord":loginPwd};
-    var json = JSON.stringify(user);
-    //var json = $.toJSON(user);
-    $.ajax({
-        type:"POST",
-        url:"../../user/login",
-        data:json,
-        contentType:"application/json",
-        async:true,
-		success:function(data){
-			alert(data);
-			var dataObject = JSON.parse(data);
-			alert(dataObject.code);
-			alert(dataObject.msg);
-			alert(dataObject.data.userName)
-		}
-       
-    });
 
- }

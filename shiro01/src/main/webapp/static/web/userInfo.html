@@ -11,11 +11,24 @@
 <script type="text/javascript" src="../js/myjs.js"></script>
 
 
-<!-- <style type="text/css">
+ <style type="text/css">
 	.titleCenter th{
 		text-align: center;
 	}
-</style> -->
+	img {
+    	vertical-align: baseline;
+    }
+    .form-control{
+    	display: inline-block;
+    }
+    .btn-primary{
+    	width:100px;
+    	height:32px;
+    	vertical-align: baseline;
+    }
+    
+    
+</style> 
 
 
 
@@ -40,9 +53,16 @@
         <li><span><img src="images/t03.png" /></span>删除</li>
         <li><span><img src="images/t04.png" /></span>统计</li>
         </ul>
-        
-        
-        <ul class="toolbar1">
+
+		
+	    <input type="text" class="form-control" id="username" placeholder="请输入用户名"  style="width:130px;height:33px">
+	    <input type="text" class="form-control" id="phone" placeholder="请输入电话号码"  style="width:130px;height:33px">
+		<button type="button" class="btn btn-primary" 
+		    data-toggle="button"> 查询
+		</button>	   	
+
+
+		<ul class="toolbar1">
         <li><span><img src="images/t05.png" /></span>设置</li>
         </ul>
     
