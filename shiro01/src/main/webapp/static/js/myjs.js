@@ -45,7 +45,8 @@ function initPaging(user){
 					str += str1+str2	
 				}
 				alert(str);
-				$('.userListPaging').append(str);
+				$('.userListPaging').empty();//清除旧的数据
+				$('.userListPaging').append(str);//添加新的数据
 			}	       
 	    });
 	
