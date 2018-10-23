@@ -1,10 +1,13 @@
 package com.shiro.controller;
 
+import java.util.List;
+
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.IncorrectCredentialsException;
 import org.apache.shiro.authc.UnknownAccountException;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.shiro.entity.Users;
+import com.shiro.service.UsersService;
 import com.shiro.utils.AjaxResponse;
 import com.shiro.utils.Constant;
 
@@ -20,6 +24,9 @@ import com.shiro.utils.Constant;
 @RequestMapping(value = "/user")
 public class ShiroController {
 
+	@Autowired
+	UsersService UsersSer;
+	
 	@RequestMapping(value = "/login",method=RequestMethod.POST)
 	@ResponseBody
 	public AjaxResponse<Users> doLogin(@RequestBody Users users) {
@@ -48,5 +55,24 @@ public class ShiroController {
 		return ajaxResponse;
 		
 	}
+	@RequestMapping(value="/listPaging",method=RequestMethod.POST)
+	@ResponseBody
+	public AjaxResponse<List<Users>> showUsersPaging(@RequestBody Users user){
+		AjaxResponse<List<Users>> ajaxResponse = new AjaxResponse<List<Users>>(Constant.RS_CODE_ERROR,"获取用户列表失败！");
+		try {
+			List<Users> u = UsersSer.selctListSelictivePaging(user);
+			ajaxResponse.setData(u);
+			ajaxResponse.setCode(Constant.RS_CODE_SUCCESS);
+			ajaxResponse.setMsg("获取用户列表成功！");
+		} catch (Exception e) {
+			e.printStackTrace();
+			return ajaxResponse;
+		}
+		return ajaxResponse;
+		
+		
+	}
+	
+	
 	
 }

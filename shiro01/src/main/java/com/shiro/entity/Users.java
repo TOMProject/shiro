@@ -1,12 +1,15 @@
 package com.shiro.entity;
 
-public class Users {
+public class Users extends PageEntity{
 	private Integer id;
 	
 	private String userName;
 	
 	private String passWord;
 
+	private String reallyName;
+	
+	private String phone;
 	
 	public Integer getId() {
 		return id;
@@ -30,6 +33,22 @@ public class Users {
 
 	public void setPassWord(String passWord) {
 		this.passWord = passWord;
+	}
+
+	public String getReallyName() {
+		return reallyName;
+	}
+
+	public void setReallyName(String reallyName) {
+		this.reallyName = reallyName;
+	}
+
+	public String getPhone() {
+		return phone;
+	}
+
+	public void setPhone(String phone) {
+		this.phone = phone;
 	}
 	
 	

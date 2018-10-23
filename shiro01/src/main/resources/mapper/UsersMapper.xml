@@ -5,6 +5,8 @@
 		<id column="id" property="id" jdbcType="INTEGER"/>
 		<result column="username" property="userName" jdbcType="VARCHAR"/>
 		<result column="password" property="passWord" jdbcType="VARCHAR"/>
+		<result column="really_name" property="reallyName" jdbcType="VARCHAR"/>
+		<result column="phone" property="phone" jdbcType="VARCHAR"/>
 	</resultMap>
 
 	<select id="selctListSelictive" resultMap="BaseResultMap" parameterType="com.shiro.entity.Users">
@@ -21,6 +23,29 @@
 			</if>
 		</where>
 
+	</select>
+	
+	
+	<select id="selctListSelictivePaging" resultMap="BaseResultMap" parameterType="com.shiro.entity.PageEntity">
+			select * from Users
+		<where>
+			<if test="id != null">
+				and id = #{id,jdbcType=INTEGER}
+			</if>
+			<if test="userName != null">
+				and username = #{userName,jdbcType=VARCHAR}
+			</if>
+			<if test="passWord != null">
+				and password = #{passWord,jdbcType=VARCHAR}
+			</if>
+			<if test="phone != null">
+				and phone = #{phone,jdbcType=VARCHAR}
+			</if>
+			<if test="reallyName != null">
+				and really_name = #{reallyName,jdbcTye=VARCHAR}
+			</if>
+		</where>
+	
 	</select>
 
 

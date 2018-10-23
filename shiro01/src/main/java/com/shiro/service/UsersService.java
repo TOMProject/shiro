@@ -1,5 +1,8 @@
 package com.shiro.service;
 
+import java.util.List;
+
+import com.shiro.entity.PageEntity;
 import com.shiro.entity.Users;
 
 public interface UsersService {
@@ -9,4 +12,9 @@ public interface UsersService {
 	 * @return
 	 */
 	Users selctListSelictive(Users user);
+	/**
+	 * 
+	 * @return
+	 */
+	List<Users> selctListSelictivePaging(PageEntity pageEntity);
 }
