@@ -4,6 +4,7 @@
  * @returns
  */
 function login(){
+	var user ={};
 	var loginName = $(".loginuser:first").val();
     var loginPwd = $(".loginpwd:eq(0)").val();
     var user = {"userName":loginName,"passWord":loginPwd};

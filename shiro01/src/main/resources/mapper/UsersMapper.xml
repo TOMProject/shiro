@@ -7,7 +7,13 @@
 		<result column="password" property="passWord" jdbcType="VARCHAR"/>
 		<result column="really_name" property="reallyName" jdbcType="VARCHAR"/>
 		<result column="phone" property="phone" jdbcType="VARCHAR"/>
+		<result column="role_name" property="roleName" jdbcType="VARCHAR"/>
 	</resultMap>
+	
+	<sql id="base_column_list">
+		id,username,password,really_name,phone
+	</sql>
+
 
 	<select id="selctListSelictive" resultMap="BaseResultMap" parameterType="com.shiro.entity.Users">
 		select * from Users
@@ -27,7 +33,7 @@
 	
 	
 	<select id="selctListSelictivePaging" resultMap="BaseResultMap" parameterType="com.shiro.entity.PageEntity">
-			select * from Users
+		select u.*,r.role_name as roleName from users as u left join user_role as ur on u.id=ur.user_id LEFT join role as r ON r.id = ur.role_id
 		<where>
 			<if test="id != null">
 				and id = #{id,jdbcType=INTEGER}

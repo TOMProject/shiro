@@ -11,6 +11,8 @@ public class Users extends PageEntity{
 	
 	private String phone;
 	
+	private String roleName;
+	
 	public Integer getId() {
 		return id;
 	}
@@ -49,6 +51,14 @@ public class Users extends PageEntity{
 
 	public void setPhone(String phone) {
 		this.phone = phone;
+	}
+
+	public String getRoleName() {
+		return roleName;
+	}
+
+	public void setRoleName(String roleName) {
+		this.roleName = roleName;
 	}
 	
 	

@@ -3,15 +3,47 @@ $(function(){
 	//初始用户页面调用的请求
 	var user = {};
 	initPaging(user)
-	
+	//点击查询按钮
 	$(".btn").click(function(){
-		alert(22)
-		var username = $("#username").val();
+		var userName = $("#username").val();
 		var phone = $("#phone").val();
-		var user = {"userName":username,"phone":phone}
+		console.log(userName)
+		if(userName != ""){
+			user.userName=userName;
+		}
+		if(phone != ""){
+			user.phone=phone;
+		}
+		//alert(user);
 		initPaging(user)	
 	});
 	
+	//点击全选checkbox
+	$("#all").click(function(){
+		if($("#all").attr("checked")){
+			$(".mycheck").attr("checked",true)	
+		}else{
+			$(".mycheck").attr("checked",false)
+		}
+	})
+	
+	
+	$(".mycheck").click(function(){
+		
+		
+	});
+	
+	
+	//获取一行的数据
+	$(".getData").click(function(){
+		$(".mycheck").each(function () {//循环店铺里面的商品
+            if ($(this).is(":checked")) {//如果该商品被选中
+            	var user = JSON.parse($(this).attr('data'));
+                alert(user.id+"--"+user.userName);
+            }
+        });	
+	})
+
 });
 
 
@@ -20,7 +52,8 @@ $(function(){
 function initPaging(user){
 	
 	 var json = JSON.stringify(user);
-	 alert(json)
+	// alert(user);
+	 console.log(json);
 	 $.ajax({
 	        type:"POST",
 	        url:"../../user/listPaging",
@@ -37,14 +70,15 @@ function initPaging(user){
 						cla = 'class="active"'
 					}
 					var str1 ="<tr "+cla+">";
-					str1 =str1+"<td>"+dataObject.data[i].userName+"</td>"
-							  +"<td>"+dataObject.data[i].passWord+"角色名称</td>"
+					str1 =str1+"<td> <input  class='mycheck' name ='' value ='' type='checkbox' data='"+JSON.stringify(dataObject.data[i])+"'/> </td>"
+							  +"<td>"+dataObject.data[i].userName+"</td>"
+							  +"<td>"+(dataObject.data[i].roleName || '')+"</td>"
 							  +"<td>"+dataObject.data[i].reallyName+"</td>"
 							  +"<td>"+dataObject.data[i].phone+"</td>"
 					var str2="</tr>";
 					str += str1+str2	
 				}
-				alert(str);
+				//alert(str);
 				$('.userListPaging').empty();//清除旧的数据
 				$('.userListPaging').append(str);//添加新的数据
 			}	       
