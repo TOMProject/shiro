@@ -12,11 +12,16 @@ public interface UsersMapper {
 	 * @param user
 	 * @return
 	 */
-	Users selctListSelictive(Users user);
+	Users selectListSelective(Users user);
 	/**
 	 * 分页
 	 * @param user
 	 * @return
 	 */
-	List<Users> selctListSelictivePaging(PageEntity pageEntity);
+	List<Users> selectListSelectivePaging(PageEntity pageEntity);
+	/**
+	 * 添加用户
+	 * @param user
+	 */
+	void insertSelective(Users user);
 }

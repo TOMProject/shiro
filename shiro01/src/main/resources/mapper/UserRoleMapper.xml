@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.shiro.mapper.UserRoleMapper">
+	<resultMap id="BaseResultMap" type="com.shiro.entity.UserRole">
+		<id column="id" property="id" jdbcType="INTEGER"/>
+		<result column="user_id" property="userId" jdbcType="INTEGER"/>
+		<result column="role_id" property="roleId" jdbcType="INTEGER"/>
+
+	</resultMap>
+	
+	<sql id="base_column_list">
+		id,user_id,role_id
+	</sql>
+
+	<select id="selectListSelective" resultMap="BaseResultMap" parameterType="com.shiro.entity.UserRole">
+		select * from Users
+		<where>
+			<if test="id != null">
+				and id = #{id,jdbcType=INTEGER}
+			</if>
+			<if test="userId != null">
+				and user_id = #{userId,jdbcType=INTEGER}
+			</if>
+			<if test="roleId != null">
+				and role_id = #{roleId,jdbcType=INTEGER}
+			</if>
+		</where>
+	</select>
+	
+	<insert id="insertSelective" parameterType="com.shiro.entity.PageEntity">
+		insert into user_role
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="userId != null">
+				user_id,
+			</if>
+			<if test="roleId != null">
+				role_id,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="userId != null">
+				#{userId,jdbcType=VARCHAR},
+			</if>
+			<if test="roleId != null">
+				#{roleId,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+	
+
+</mapper>

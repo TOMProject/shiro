@@ -12,7 +12,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.shiro.entity.Users;
@@ -60,7 +59,7 @@ public class ShiroController {
 	public AjaxResponse<List<Users>> showUsersPaging(@RequestBody Users user){
 		AjaxResponse<List<Users>> ajaxResponse = new AjaxResponse<List<Users>>(Constant.RS_CODE_ERROR,"获取用户列表失败！");
 		try {
-			List<Users> u = UsersSer.selctListSelictivePaging(user);
+			List<Users> u = UsersSer.selectListSelectivePaging(user);
 			ajaxResponse.setData(u);
 			ajaxResponse.setCode(Constant.RS_CODE_SUCCESS);
 			ajaxResponse.setMsg("获取用户列表成功！");
@@ -69,9 +68,24 @@ public class ShiroController {
 			return ajaxResponse;
 		}
 		return ajaxResponse;
-		
+	}
+	@RequestMapping(value="addUser",method=RequestMethod.POST)
+	@ResponseBody
+	public AjaxResponse<Object> addUser(@RequestBody Users user){
+		AjaxResponse<Object> ajaxResponse = new AjaxResponse<Object>(Constant.RS_CODE_ERROR,"添加用户失败!");
+		try {
+			UsersSer.addUser(user);
+			ajaxResponse.setCode(Constant.RS_CODE_SUCCESS);
+			ajaxResponse.setMsg("添加成功");
+		} catch (Exception e) {
+			e.printStackTrace();
+			return ajaxResponse;
+		}	
+		return ajaxResponse;
 		
 	}
+	
+	
 	
 	
 	

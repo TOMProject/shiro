@@ -14,8 +14,7 @@
 		id,username,password,really_name,phone
 	</sql>
 
-
-	<select id="selctListSelictive" resultMap="BaseResultMap" parameterType="com.shiro.entity.Users">
+	<select id="selectListSelective" resultMap="BaseResultMap" parameterType="com.shiro.entity.Users">
 		select * from Users
 		<where>
 			<if test="id != null">
@@ -28,11 +27,10 @@
 				and password = #{passWord,jdbcType=VARCHAR}
 			</if>
 		</where>
-
 	</select>
 	
 	
-	<select id="selctListSelictivePaging" resultMap="BaseResultMap" parameterType="com.shiro.entity.PageEntity">
+	<select id="selectListSelectivePaging" resultMap="BaseResultMap" parameterType="com.shiro.entity.PageEntity">
 		select u.*,r.role_name as roleName from users as u left join user_role as ur on u.id=ur.user_id LEFT join role as r ON r.id = ur.role_id
 		<where>
 			<if test="id != null">
@@ -51,8 +49,39 @@
 				and really_name = #{reallyName,jdbcTye=VARCHAR}
 			</if>
 		</where>
-	
 	</select>
+	
+	<insert id="insertSelective" parameterType="com.shiro.entity.PageEntity">
+		insert into users
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="userName != null">
+				username,
+			</if>
+			<if test="passWord != null">
+				password,
+			</if>
+			<if test="phone != null ">
+				phone,
+			</if>
+			<if test="reallyName != null">
+				really_name,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="userName != null">
+				#{userName,jdbcType=VARCHAR},
+			</if>
+			<if test="passWord != null">
+				#{passWord,jdbcType=VARCHAR},
+			</if>
+			<if test="phone != null ">
+				#{phone,jdbcType=VARCHAR},
+			</if>
+			<if test="reallyName != null">
+				#{reallyName,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
 
 
 

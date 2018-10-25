@@ -45,7 +45,7 @@ public class MyRealm extends AuthorizingRealm {
 		Users user = new Users();
 		//user.setPassWord(password);
 		user.setUserName(username);
-		Users u = usersSer.selctListSelictive(user);
+		Users u = usersSer.selectListSelective(user);
 		if(u == null) {
 			return null;
 		}
