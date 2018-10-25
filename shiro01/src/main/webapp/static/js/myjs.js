@@ -18,7 +18,6 @@ $(function(){
 		if(phone != ""){
 			user.phone=phone;
 		}
-		//alert(user);
 		initPaging(user)	
 	});
 	
@@ -48,16 +47,15 @@ $(function(){
 	/**
 	 * 点击框时清空里面的数据
 	 */
-	$("input").click(function(){
-		$(this).val("");
-	})
+//	$("input").click(function(){
+//		$(this).val("");
+//	})
 
 		
 	/**
 	 * 当点击添加用户时候执行
 	 */
 	$('#myModal').on('show.bs.modal', function () {
-	
 		//查询角色
 		selectListRole({});
 	})
@@ -66,7 +64,6 @@ $(function(){
 	 * 点击保存用户的时候
 	 */
 	$("#saveUser").click(function(){
-		alert(123)
 		saveUser();
 	})
 
@@ -78,7 +75,6 @@ $(function(){
 
 function initPaging(user){
 	 var json = JSON.stringify(user);
-	// alert(user);
 	 console.log(json);
 	 $.ajax({
 	        type:"POST",
@@ -87,7 +83,6 @@ function initPaging(user){
 	        contentType:"application/json",
 	        async:true,
 			success:function(data){
-				//alert(data);
 				var dataObject = JSON.parse(data);
 				var str = "";
 				for(var i = 0 ;i<dataObject.data.length;i++){
@@ -104,7 +99,6 @@ function initPaging(user){
 					var str2="</tr>";
 					str += str1+str2	
 				}
-				//alert(str);
 				$('.userListPaging').empty();//清除旧的数据
 				$('.userListPaging').append(str);//添加新的数据
 			}	       
@@ -137,7 +131,6 @@ function saveUser(){
 	var passWord = $("#passWord").val();
 	var roleId = $("#role").val();
 	var phone = $("#addphone").val();
-	alert(phone);
 	var user ={};
 	if(reallyName != ""){
 		user.reallyName = reallyName;
@@ -156,7 +149,6 @@ function saveUser(){
 	}
 	
 	var json = JSON.stringify(user);
-	alert(json);
 	$.ajax({
 		type:"POST",
 		url:"../../user/addUser",
@@ -167,8 +159,11 @@ function saveUser(){
 			if(object.code == "0000"){
 				$('#myModal').modal("hide")
 			}
+			if(object.code == "0001"){
+				
+			}
 		}
-	})
+	});
 	
 }
 

@@ -3,8 +3,10 @@ package com.shiro.utils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.config.IniSecurityManagerFactory;
+import org.apache.shiro.crypto.hash.SimpleHash;
 import org.apache.shiro.mgt.SecurityManager;
 import org.apache.shiro.subject.Subject;
+import org.apache.shiro.util.ByteSource;
 import org.apache.shiro.util.Factory;
 
 public class ShiroUitls {
@@ -25,5 +27,17 @@ public class ShiroUitls {
 		return user;
 
 	}
+	
+	public static String passwordMD5(String username,String password) {
+		String hashAlgorithmName = "MD5";
+        String credentials = password;//密码
+        int hashIterations = 1024;
+        ByteSource credentialsSalt = ByteSource.Util.bytes(username);//盐值
+        SimpleHash obj = new SimpleHash(hashAlgorithmName, credentials, credentialsSalt, hashIterations); 
+        return obj.toHex();
+	}
+	
+	
+	
 
 }

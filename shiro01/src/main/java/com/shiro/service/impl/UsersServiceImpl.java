@@ -14,6 +14,7 @@ import com.shiro.mapper.RoleMapper;
 import com.shiro.mapper.UserRoleMapper;
 import com.shiro.mapper.UsersMapper;
 import com.shiro.service.UsersService;
+import com.shiro.utils.ShiroUitls;
 
 @Service
 public class UsersServiceImpl implements UsersService {
@@ -46,7 +47,7 @@ public class UsersServiceImpl implements UsersService {
 		Users addUser = new Users();
 		addUser.setUserName(user.getUserName());
 		addUser.setReallyName(user.getReallyName());
-		addUser.setPassWord(user.getPassWord());
+		addUser.setPassWord(ShiroUitls.passwordMD5(user.getUserName(), user.getPassWord()));
 		addUser.setPhone(user.getPhone());	
 		usersMapper.insertSelective(addUser);
 		
