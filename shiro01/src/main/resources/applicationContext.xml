@@ -148,7 +148,7 @@
                 <!-- 需要管理员角色才能访问此页面 -->  
                 /user/addUser=roles[admin]
                 <!--拦截非静态资源的所有请求-->   
-				/**=authc
+				/*=authc
 			</value>
 		</property>
 	</bean>
@@ -157,12 +157,13 @@
 	<bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor" />
 
 	<!-- 开启Shiro注解 -->
-	<bean
-		class="org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator"
-		depends-on="lifecycleBeanPostProcessor" />
-	<bean
-		class="org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor">
-		<property name="securityManager" ref="securityManager" />
+	<bean class="org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator" depends-on="lifecycleBeanPostProcessor">
+    <property name="proxyTargetClass" value="true" />
 	</bean>
+	
+	<bean class="org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor">
+	    <property name="securityManager" ref="securityManager"/>
+	</bean>
+
 
 </beans>    

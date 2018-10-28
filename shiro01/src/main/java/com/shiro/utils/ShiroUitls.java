@@ -37,7 +37,9 @@ public class ShiroUitls {
         return obj.toHex();
 	}
 	
-	
+	public static void main(String[] args) {
+		System.out.println(passwordMD5("tester", "123456"));
+	}
 	
 
 }
