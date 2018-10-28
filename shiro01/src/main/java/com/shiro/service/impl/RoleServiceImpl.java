@@ -1,6 +1,7 @@
 package com.shiro.service.impl;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,6 +19,12 @@ public class RoleServiceImpl implements RoleService {
 	@Override
 	public List<Role> selectListSelective(Role role) {
 		return roleMapper.selectListSelective(role);
+	}
+
+	@Override
+	public List<Role> selectRoleByUser(Map map) {
+		// TODO Auto-generated method stub
+		return roleMapper.selectRoleByUser(map);
 	}
 
 }

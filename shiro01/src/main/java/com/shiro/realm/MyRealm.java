@@ -1,5 +1,14 @@
 package com.shiro.realm;
 
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
+
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
@@ -7,6 +16,7 @@ import org.apache.shiro.authc.AuthenticationToken;
 import org.apache.shiro.authc.SimpleAuthenticationInfo;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.authz.AuthorizationInfo;
+import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.crypto.hash.SimpleHash;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.session.Session;
@@ -14,7 +24,11 @@ import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.util.ByteSource;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.shiro.entity.Permission;
+import com.shiro.entity.Role;
 import com.shiro.entity.Users;
+import com.shiro.service.PermissionService;
+import com.shiro.service.RoleService;
 import com.shiro.service.UsersService;
 /**
  *  自定义Realm
@@ -25,23 +39,50 @@ public class MyRealm extends AuthorizingRealm {
 
 	@Autowired
 	UsersService usersSer;
+	@Autowired
+	RoleService roleSer;
+	@Autowired
+	PermissionService permissionSer;
 	
 	
 	public  static final String SESSION_KEY	= "session_key";
-	
+	/**
+	 * shiro 授权 
+	 */
 	@Override
-	protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection arg0) {
+	protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principal) {
+		System.out.println("shiro 开始授权");
+		 String userName = (String)principal.getPrimaryPrincipal();
+		SimpleAuthorizationInfo simpleAuthorizationInfo = new SimpleAuthorizationInfo();
+		//根据用户获取角色集合
+		Map<String, Object> map = new HashMap<String,Object>();
+		map.put("userName", userName);
+		List<Role> roles = roleSer.selectRoleByUser(map);
 		
-		return null;
+		Set<String> roleNames = roles.stream().map(Role :: getRoleName).collect(Collectors.toSet());
+		simpleAuthorizationInfo.setRoles(roleNames);
+		List<Permission> permissions = permissionSer.selectPermissionByUserName(userName);
+		Set<String> permissionSet = new HashSet<String>();
+		for (Permission per : permissions) {
+			if (per.getPerms() != null) {
+				permissionSet.addAll(Arrays.asList(per.getPerms().split(",")));
+			}
+		}
+		simpleAuthorizationInfo.setStringPermissions(permissionSet);
+		
+		return simpleAuthorizationInfo;
 
 	}
 
+	
+	/**
+	 * 用户认证
+	 */
 	@Override
 	protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authenticationToken) throws AuthenticationException {
 		
 		UsernamePasswordToken token = (UsernamePasswordToken) authenticationToken;
 		String username = token.getUsername();
-		String password = String.valueOf(token.getPassword());
 		Users user = new Users();
 		//user.setPassWord(password);
 		user.setUserName(username);

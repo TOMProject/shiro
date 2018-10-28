@@ -4,7 +4,7 @@
 	<resultMap id="BaseResultMap" type="com.shiro.entity.Role">
 		<id column="id" property="id" jdbcType="INTEGER"/>
 		<result column="role_name" property="roleName" jdbcType="VARCHAR"/>
-		
+		<result column="username" property="userName" jdbcType="VARCHAR"/>	
 	</resultMap>
 	
 	<sql id="base_column_list">
@@ -15,7 +15,7 @@
 	<select id="selectListSelective" resultMap="BaseResultMap" parameterType="com.shiro.entity.Role">
 		select 
 		<include refid="base_column_list"></include>
-		 from role
+		 from role 
 		<where>
 			<if test="id != null">
 				and id = #{id,jdbcType=INTEGER}
@@ -23,9 +23,22 @@
 			<if test="roleName != null">
 				and role_name = #{roleName,jdbcType=VARCHAR}
 			</if>
-		</where>
 
+		</where>
 	</select>
+	
+	<select id="selectRoleByUser" resultMap="BaseResultMap" parameterType="java.util.Map">
+		select 
+		r.id,r.role_name as role_name
+		from role as r left join user_role as ur on r.id = ur.role_id left join users as u on u.id = ur.user_id
+		<where>
+			<if test="userName != null">
+				and username = #{userName,jdbcType=VARCHAR}			
+			</if>
+		</where>
+		
+	</select>
+	
 	
 	
 	

@@ -155,6 +155,7 @@ function saveUser(){
 		data:json,
 		contentType:"application/json",
 		success:function(mydata){
+			console.log(mydata);
 			var object = JSON.parse(mydata);
 			if(object.code == "0000"){
 				$('#myModal').modal("hide")

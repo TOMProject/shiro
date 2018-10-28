@@ -7,6 +7,6 @@
 <title>Insert title here</title>
 </head>
 <body>
-认证未通过！
+	认证未通过！
 </body>
 </html>

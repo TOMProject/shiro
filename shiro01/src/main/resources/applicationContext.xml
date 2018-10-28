@@ -132,11 +132,11 @@
 		<!-- Shiro的核心安全接口,这个属性是必须的 -->
 		<property name="securityManager" ref="securityManager" />
 		<!-- 身份认证失败，则跳转到登录页面的配置 -->
-		<property name="loginUrl" value="/static/web/login.html" />
+		<property name="loginUrl" value="/static/web/login1.html" />
 		<!-- 登录成功挑转的页面 -->
 		<property name="successUrl" value="/success.jsp" />
 		<!-- 权限认证失败，则跳转到指定页面 -->
-		<property name="unauthorizedUrl" value="/unauthorized.jsp" />
+		<property name="unauthorizedUrl" value="/static/web/unauthorized.html" />
 		<!-- Shiro连接约束配置,即过滤链的定义 -->
 		<property name="filterChainDefinitions">
 			<value>
@@ -144,9 +144,9 @@
 				/user/login=anon
 				/static/**=anon
 				 <!-- 需要权限为add的用户才能访问此请求-->  
-                /user/add=perms[user:add]  
+              	/user/addUser=perms[admin:add]
                 <!-- 需要管理员角色才能访问此页面 -->  
-                /user/delelte=roles[admin] 
+                /user/addUser=roles[admin]
                 <!--拦截非静态资源的所有请求-->   
 				/**=authc
 			</value>

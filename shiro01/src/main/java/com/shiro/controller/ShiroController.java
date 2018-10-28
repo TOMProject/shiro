@@ -6,6 +6,7 @@ import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.IncorrectCredentialsException;
 import org.apache.shiro.authc.UnknownAccountException;
 import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -55,6 +56,7 @@ public class ShiroController {
 		
 	}
 	@RequestMapping(value="/listPaging",method=RequestMethod.POST)
+	@RequiresPermissions("user:listPaging")
 	@ResponseBody
 	public AjaxResponse<List<Users>> showUsersPaging(@RequestBody Users user){
 		AjaxResponse<List<Users>> ajaxResponse = new AjaxResponse<List<Users>>(Constant.RS_CODE_ERROR,"获取用户列表失败！");
@@ -70,6 +72,7 @@ public class ShiroController {
 		return ajaxResponse;
 	}
 	@RequestMapping(value="addUser",method=RequestMethod.POST)
+	@RequiresPermissions("user:addUser")
 	@ResponseBody
 	public AjaxResponse<Object> addUser(@RequestBody Users user){
 		AjaxResponse<Object> ajaxResponse = new AjaxResponse<Object>(Constant.RS_CODE_ERROR,"添加用户失败!");

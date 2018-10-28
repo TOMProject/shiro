@@ -15,7 +15,7 @@
 	</sql>
 
 	<select id="selectListSelective" resultMap="BaseResultMap" parameterType="com.shiro.entity.Users">
-		select * from Users
+		select * from users
 		<where>
 			<if test="id != null">
 				and id = #{id,jdbcType=INTEGER}
