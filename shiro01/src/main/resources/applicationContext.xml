@@ -144,9 +144,9 @@
 				/user/login=anon
 				/static/**=anon
 				 <!-- 需要权限为add的用户才能访问此请求-->  
-              	/user/addUser=perms[admin:add]
+              	<!-- /user/addUser=perms[admin:add] -->
                 <!-- 需要管理员角色才能访问此页面 -->  
-                /user/addUser=roles[admin]
+                <!-- /user/addUser=roles[admin] -->
                 <!--拦截非静态资源的所有请求-->   
 				/*=authc
 			</value>
@@ -154,16 +154,16 @@
 	</bean>
 
 	<!-- 保证实现了Shiro内部lifecycle函数的bean执行 -->
-	<bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor" />
-
+	<!-- <bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor" />
+ -->
 	<!-- 开启Shiro注解 -->
-	<bean class="org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator" depends-on="lifecycleBeanPostProcessor">
+<!-- 	<bean class="org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator" depends-on="lifecycleBeanPostProcessor">
     <property name="proxyTargetClass" value="true" />
-	</bean>
+	</bean> -->
 	
-	<bean class="org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor">
+<!-- 	<bean class="org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor">
 	    <property name="securityManager" ref="securityManager"/>
-	</bean>
+	</bean> -->
 
 
 </beans>    

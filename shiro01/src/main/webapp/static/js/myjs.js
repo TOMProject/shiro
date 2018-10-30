@@ -25,7 +25,7 @@ $(function(){
 	 * 点击全选checkbox
 	 */
 	$("#all").click(function(){
-		if($("#all").attr("checked")){
+		if($(this).is(":checked")){
 			$(".mycheck").attr("checked",true)	
 		}else{
 			$(".mycheck").attr("checked",false)
@@ -33,23 +33,11 @@ $(function(){
 	})
 
 	/**
-	 * 获取一行的数据
+	 * 关闭弹出框
 	 */
-	$(".getData").click(function(){
-		$(".mycheck").each(function () {//循环店铺里面的商品
-            if ($(this).is(":checked")) {//如果该商品被选中
-            	var user = JSON.parse($(this).attr('data'));
-                alert(user.id+"--"+user.userName);
-            }
-        });	
+	$(".close").click(function(){
+		$("#warningInfo").toggle(200);
 	})
-
-	/**
-	 * 点击框时清空里面的数据
-	 */
-//	$("input").click(function(){
-//		$(this).val("");
-//	})
 
 		
 	/**
@@ -67,11 +55,39 @@ $(function(){
 		saveUser();
 	})
 
+	$("#updateUser").click(function(){
+		alert("24234");
+		var updateId = new Array();
+		$(".mycheck").each(function () {//循环店铺里面的商品
+            if ($(this).is(":checked")) {//如果该商品被选中
+            	var user = JSON.parse($(this).attr('data'));
+            	updateId.push(user);
+            }
+        });	
+		
+		if(updateId.length == 0){
+			message("请选择修改的数据！");
+			return;
+		}
+		if(updateId.length > 1){
+			message("一次只能修改一个用户！");
+			return;
+		}
+		var user = updateId[0];
+		console.log(user);
+		//数据回填
+		$("#updateReallyName").val(user.reallyName);
+		$("#updateUserName").val(user.userName);
+		$("#updatePhone").val(user.phone);
+		$("#updatePassWord").val(user.passWord);
+		$("#updateRole").append("<option value=''>"+user.roleName+"</option>");
+		$('#updateUserModal').modal('show');
+
+	});
+	
+	
 	
 });
-
-
-
 
 function initPaging(user){
 	 var json = JSON.stringify(user);
@@ -84,6 +100,10 @@ function initPaging(user){
 	        async:true,
 			success:function(data){
 				var dataObject = JSON.parse(data);
+				var status = warningInfo(dataObject);//异常提示框
+				if(status == false){
+					return;
+				}
 				var str = "";
 				for(var i = 0 ;i<dataObject.data.length;i++){
 					var cla = "";
@@ -157,18 +177,36 @@ function saveUser(){
 		success:function(mydata){
 			console.log(mydata);
 			var object = JSON.parse(mydata);
+			var status = warningInfo(object);
+			if(status == false){
+				return;
+			}
 			if(object.code == "0000"){
 				$('#myModal').modal("hide")
-			}
-			if(object.code == "0001"){
-				
 			}
 		}
 	});
 	
 }
 
+/**
+ * 异常提示框
+ * @param dataObject
+ * @returns
+ */
+function  warningInfo(dataObject){
+	if(dataObject.code == "0001"){
+		$("#showWarningInfo").text("警告！："+dataObject.msg)
+		$("#warningInfo").fadeIn(200);
+		return false;
+	}
+	return true;
+}
 
-
+function message(msg){
+	$("#showWarningInfo").text("警告！："+msg)
+	$("#warningInfo").toggle(200);
+	
+}
 
 

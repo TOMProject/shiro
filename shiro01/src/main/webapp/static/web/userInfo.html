@@ -31,6 +31,18 @@ img {
 	height: 32px;
 	vertical-align: baseline;
 }
+
+
+#warningInfo{
+	display: none;
+	width:500px; 
+	position:absolute;
+	top:1%; 
+	left:37%;
+	box-shadow:1px 8px 10px 1px #9b9b9b;
+	z-index:111111;
+}
+
 </style>
 
 
@@ -51,8 +63,8 @@ img {
 		<div class="tools">
 
 			<ul class="toolbar">
-				<li class="click" id="addUsers" data-toggle="modal" data-target="#myModal"><span><img src="images/t01.png" /></span>添加</li>
-				<li class="click"><span><img src="images/t02.png" /></span>修改</li>
+				<li class="click" id="addUsers" data-toggle="modal" data-target="#addUserModal"><span><img src="images/t01.png" /></span>添加</li>
+				<li class="click" id="updateUser" ><span><img src="images/t02.png" /></span>修改</li>
 				<li><span><img src="images/t03.png" /></span>删除</li>
 				<li><span><img src="images/t04.png" /></span>统计</li>
 			</ul>
@@ -83,11 +95,11 @@ img {
 				</tbody>
 			</table>
 		</div>
-		<button class="getData">获取</button>
+		
 	</div>
 
-	<!-- 模态框（Modal） -->
-	<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<!-- 添加用户 模态框（Modal） -->
+	<div class="modal fade" id="addUserModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 	    <div class="modal-dialog">
 	        <div class="modal-content">
 	            <div class="modal-header">
@@ -146,7 +158,76 @@ img {
 	</div>
 	<!-- /.modal -->
 
+	<!-- 修改用户 模态框（Modal） -->
+	<div class="modal fade" id="updateUserModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	    <div class="modal-dialog">
+	        <div class="modal-content">
+	            <div class="modal-header">
+	                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+	                <h7 class="modal-title" id="updateModalLabel">修改用户</h7>
+	            </div>
+	            <div class="modal-body">
+					<form class="form-horizontal" role="form">
+					
+					  <div class="form-group">
+					    <label for="firstname" class="col-sm-2 control-label">真实姓名：</label>
+					    <div class="col-sm-10">
+					      <input type="text" id="updateReallyName" class="form-control" placeholder="请输入真实姓名" name="name" />
+					    </div>
+					  </div>
+					
+					  <div class="form-group">
+					    <label for="firstname" class="col-sm-2 control-label">账户名：</label>
+					    <div class="col-sm-10">
+					      <input type="text"  id="updateUserName" class="form-control" placeholder="请输入账户名" name="name" />
+					    </div>
+					  </div>
+					  
+					  <div class="form-group">
+					    <label for="lastname" class="col-sm-2 control-label">密&nbsp;&nbsp;&nbsp;&nbsp;码：</label>
+					    <div class="col-sm-10">
+					      <input type="password" id="updatePassWord" class="form-control" placeholder="请输入密码" name="password"/>
+					    </div>
+					  </div>
+					  
+					  <div class="form-group">
+						 <label for="lastname" class="col-sm-2 control-label">角&nbsp;&nbsp;&nbsp;&nbsp;色：</label>
+						 <div class="col-sm-10">
+							<select id="updateRole" class="form-control">
+								
+							</select>
+					    </div>
+					  </div>
+					  
+					 <div class="form-group">
+					    <label for="firstname"  class="col-sm-2 control-label">电话号码：</label>
+					    <div class="col-sm-10">
+					      <input type="text" id="updatePhone" class="form-control" placeholder="请输入电话号码" name="name" />
+					    </div>
+					  </div>
+					  
+					   <div class="modal-footer">
+			                <button type="button" class="btn btn-primary" data-dismiss="modal">取消</button>
+			                <button type="button" id="updateUser" class="btn btn-primary">保存</button>
+			           </div>
+					</form>
+						
+	            </div>
+	        </div><!-- /.modal-content -->
+	    </div><!-- /.modal-dialog -->
+	</div>
+	<!-- /.modal -->
+
+
+
+
 	
+    <div id="warningInfo" class="alert alert-warning alert-dismissable" >
+           <button type="button" class="close">
+               &times;
+           </button>
+         	<strong id="showWarningInfo"></strong>
+       </div>
 	
 
 </body>
