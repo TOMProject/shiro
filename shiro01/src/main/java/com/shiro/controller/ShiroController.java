@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.shiro.entity.ShowPage;
 import com.shiro.entity.Users;
 import com.shiro.service.UsersService;
 import com.shiro.utils.AjaxResponse;
@@ -58,11 +59,12 @@ public class ShiroController {
 	@RequestMapping(value="/listPaging",method=RequestMethod.POST)
 	@RequiresPermissions("user:listPaging")
 	@ResponseBody
-	public AjaxResponse<List<Users>> showUsersPaging(@RequestBody Users user){
-		AjaxResponse<List<Users>> ajaxResponse = new AjaxResponse<List<Users>>(Constant.RS_CODE_ERROR,"获取用户列表失败！");
+	public AjaxResponse<ShowPage<Users>> showUsersPaging(@RequestBody Users user){
+		AjaxResponse<ShowPage<Users>> ajaxResponse = new AjaxResponse<ShowPage<Users>>(Constant.RS_CODE_ERROR,"获取用户列表失败！");
 		try {
 			List<Users> u = UsersSer.selectListSelectivePaging(user);
-			ajaxResponse.setData(u);
+			ShowPage<Users> page = new ShowPage<>(user, u);
+			ajaxResponse.setData(page);
 			ajaxResponse.setCode(Constant.RS_CODE_SUCCESS);
 			ajaxResponse.setMsg("获取用户列表成功！");
 		} catch (Exception e) {

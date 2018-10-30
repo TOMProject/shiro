@@ -23,6 +23,8 @@ public class AjaxResponse<T> implements Serializable {
 		setMsg(Constant.RS_MSG_SUCCESS);
 	}
 
+
+	
 	public AjaxResponse(String code, String msg, T data) {
 		super();
 		this.code = code;

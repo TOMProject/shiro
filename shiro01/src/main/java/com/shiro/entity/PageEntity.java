@@ -8,7 +8,7 @@ public class PageEntity {
 	/**
 	 * 每页显示数据
 	 */
-	private int pageSize = 10;
+	private int pageSize = 5;
 	/**
 	 * 总条数
 	 */

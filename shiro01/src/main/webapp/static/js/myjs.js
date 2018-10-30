@@ -43,7 +43,7 @@ $(function(){
 	/**
 	 * 当点击添加用户时候执行
 	 */
-	$('#myModal').on('show.bs.modal', function () {
+	$('#addUserModal').on('show.bs.modal', function () {
 		//查询角色
 		selectListRole({});
 	})
@@ -55,8 +55,10 @@ $(function(){
 		saveUser();
 	})
 
+	/**
+	 * 点击修改按钮
+	 */
 	$("#updateUser").click(function(){
-		alert("24234");
 		var updateId = new Array();
 		$(".mycheck").each(function () {//循环店铺里面的商品
             if ($(this).is(":checked")) {//如果该商品被选中
@@ -84,10 +86,40 @@ $(function(){
 		$('#updateUserModal').modal('show');
 
 	});
+	var pageCount = 10;
 	
-	
-	
+	/**
+	 * 分页
+	 */
+	layui.use('laypage', function() {
+		var laypage = layui.laypage;
+		console.log(pageCount);
+		laypage.render({
+			elem : 'paging', // 注意，这里的 test1 是 ID，不用加 # 号
+			count : pageCount,// 数据总数，从服务端得到
+			limit : 5,
+			curr : location.hash.replace('#!fenye=', ''), // 获取起始页
+			jump : function(obj, first) {// 切换分页回调函数
+				//initPaging({});
+				// obj包含了当前分页的所有参数，比如：
+				console.log(obj.curr); // 得到当前页，以便向服务端请求对应页的数据。
+				console.log(obj.limit); // 得到每页显示的条数
+				// 首次不执行
+				if (!first) {
+					console.log("first 不执行");
+					var user = {};
+					user.pageNo = obj.curr;
+					user.pageSize=obj.limit;
+					initPaging(user);
+					// do something
+				}
+			}
+		});
+
+	});
+
 });
+
 
 function initPaging(user){
 	 var json = JSON.stringify(user);
@@ -105,22 +137,25 @@ function initPaging(user){
 					return;
 				}
 				var str = "";
-				for(var i = 0 ;i<dataObject.data.length;i++){
+				for(var i = 0 ;i<dataObject.data.list.length;i++){
 					var cla = "";
 					if(i%2 == 1){
 						cla = 'class="active"'
 					}
 					var str1 ="<tr "+cla+">";
-					str1 =str1+"<td> <input  class='mycheck' name ='' value ='' type='checkbox' data='"+JSON.stringify(dataObject.data[i])+"'/> </td>"
-							  +"<td>"+dataObject.data[i].userName+"</td>"
-							  +"<td>"+(dataObject.data[i].roleName || '')+"</td>"
-							  +"<td>"+dataObject.data[i].reallyName+"</td>"
-							  +"<td>"+dataObject.data[i].phone+"</td>"
+					str1 =str1+"<td> <input  class='mycheck' name ='' value ='' type='checkbox' data='"+JSON.stringify(dataObject.data.list[i])+"'/> </td>"
+							  +"<td>"+dataObject.data.list[i].userName+"</td>"
+							  +"<td>"+(dataObject.data.list[i].roleName || '')+"</td>"
+							  +"<td>"+dataObject.data.list[i].reallyName+"</td>"
+							  +"<td>"+dataObject.data.list[i].phone+"</td>"
 					var str2="</tr>";
 					str += str1+str2	
 				}
 				$('.userListPaging').empty();//清除旧的数据
 				$('.userListPaging').append(str);//添加新的数据
+				
+				pageCount = dataObject.data.pageCount;
+				
 			}	       
 	    });
 }
@@ -139,7 +174,7 @@ function selectListRole(role){
 			  str=str+ "<option value="+"'"+roleObject.data[i].id+"'"+">"+roleObject.data[i].roleName+"</option>"			  		
 		  }
 		  $("#role").empty();
-		  $("#role").append(str);		  
+		  $("#role").append(str);
 	  }
   });
 
@@ -182,7 +217,7 @@ function saveUser(){
 				return;
 			}
 			if(object.code == "0000"){
-				$('#myModal').modal("hide")
+				$('#addUserModal').modal("hide")
 			}
 		}
 	});
