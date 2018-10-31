@@ -4,23 +4,16 @@ $(function(){
 	 * 初始用户页面调用的请求
 	 */
 	initPaging({})
+	
 	/**
 	 * 点击查询按钮
 	 */
 	$(".btn").click(function(){
-		var user = {};
-		var userName = $("#username").val();
-		var phone = $("#phone").val();
-		console.log(userName)
-		if(userName != ""){
-			user.userName=userName;
-		}
-		if(phone != ""){
-			user.phone=phone;
-		}
+		var user = {};	
+		getCondition(user)		
 		initPaging(user)	
 	});
-	
+
 	/**
 	 * 点击全选checkbox
 	 */
@@ -39,7 +32,6 @@ $(function(){
 		$("#warningInfo").toggle(200);
 	})
 
-		
 	/**
 	 * 当点击添加用户时候执行
 	 */
@@ -86,38 +78,10 @@ $(function(){
 		$('#updateUserModal').modal('show');
 
 	});
-	var pageCount = 10;
+	var pageCount = -1;
 	
-	/**
-	 * 分页
-	 */
-	layui.use('laypage', function() {
-		var laypage = layui.laypage;
-		console.log(pageCount);
-		laypage.render({
-			elem : 'paging', // 注意，这里的 test1 是 ID，不用加 # 号
-			count : pageCount,// 数据总数，从服务端得到
-			limit : 5,
-			curr : location.hash.replace('#!fenye=', ''), // 获取起始页
-			jump : function(obj, first) {// 切换分页回调函数
-				//initPaging({});
-				// obj包含了当前分页的所有参数，比如：
-				console.log(obj.curr); // 得到当前页，以便向服务端请求对应页的数据。
-				console.log(obj.limit); // 得到每页显示的条数
-				// 首次不执行
-				if (!first) {
-					console.log("first 不执行");
-					var user = {};
-					user.pageNo = obj.curr;
-					user.pageSize=obj.limit;
-					initPaging(user);
-					// do something
-				}
-			}
-		});
-
-	});
-
+	
+	
 });
 
 
@@ -154,7 +118,8 @@ function initPaging(user){
 				$('.userListPaging').empty();//清除旧的数据
 				$('.userListPaging').append(str);//添加新的数据
 				
-				pageCount = dataObject.data.pageCount;
+				var data = dataObject.data;
+				paging(data);
 				
 			}	       
 	    });
@@ -242,6 +207,55 @@ function message(msg){
 	$("#showWarningInfo").text("警告！："+msg)
 	$("#warningInfo").toggle(200);
 	
+}
+
+/**
+ * 分页
+ */
+function paging (data){
+		layui.use('laypage', function() {	
+		var laypage = layui.laypage;
+		console.log(data.pageCount);
+		laypage.render({
+			elem : 'paging', // 注意，这里的 test1 是 ID，不用加 # 号
+			count : data.pageCount,// 数据总数，从服务端得到
+			limit : 5,
+			curr : data.pageNo, // 获取起始页
+			jump : function(obj, first) {// 切换分页回调函数
+				// obj包含了当前分页的所有参数，比如：
+				console.log(obj.curr); // 得到当前页，以便向服务端请求对应页的数据。
+				console.log(obj.limit); // 得到每页显示的条数
+				// 首次不执行
+				if (!first) {
+					console.log(user);
+					var user ={};
+					getCondition(user)	
+					user.pageNo = obj.curr;
+					user.pageSize=obj.limit;
+					initPaging(user);
+				}
+			}
+		});
+	
+	});
+}
+
+/**
+ * 获取查询条件
+ * @param user
+ * @returns
+ */
+
+function getCondition(user){
+	var userName = $("#username").val();
+	var phone = $("#phone").val();
+	console.log(userName)
+	if(userName != ""){
+		user.userName=userName;
+	}
+	if(phone != ""){
+		user.phone=phone;
+	}
 }
 
 

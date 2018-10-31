@@ -46,6 +46,11 @@ public class UsersServiceImpl implements UsersService {
 	public void addUser(Users user) {
 		Users addUser = new Users();
 		addUser.setUserName(user.getUserName());
+		Users isExist = usersMapper.selectListSelective(addUser);
+		if(isExist != null) {
+			throw new RuntimeException("账号名重复！");
+		}
+		
 		addUser.setReallyName(user.getReallyName());
 		addUser.setPassWord(ShiroUitls.passwordMD5(user.getUserName(), user.getPassWord()));
 		addUser.setPhone(user.getPhone());	

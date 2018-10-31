@@ -84,6 +84,7 @@ public class ShiroController {
 			ajaxResponse.setMsg("添加成功");
 		} catch (Exception e) {
 			e.printStackTrace();
+			ajaxResponse.setMsg("添加用户失败："+e.getMessage());
 			return ajaxResponse;
 		}	
 		return ajaxResponse;
