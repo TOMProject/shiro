@@ -43,8 +43,7 @@ public class MyRealm extends AuthorizingRealm {
 	RoleService roleSer;
 	@Autowired
 	PermissionService permissionSer;
-	
-	
+
 	public  static final String SESSION_KEY	= "session_key";
 	/**
 	 * shiro 授权 
@@ -91,8 +90,8 @@ public class MyRealm extends AuthorizingRealm {
 			return null;
 		}
 		
-		Session session = SecurityUtils.getSubject().getSession();
-		session.setAttribute(SESSION_KEY, session);
+//		Session session = SecurityUtils.getSubject().getSession();
+//		session.setAttribute(SESSION_KEY, session);
 		String name = this.getName();
 		ByteSource credentialsSalt = ByteSource.Util.bytes(username);//加盐
 		SimpleAuthenticationInfo sim = new SimpleAuthenticationInfo(username,u.getPassWord(),credentialsSalt, name);
@@ -112,3 +111,7 @@ public class MyRealm extends AuthorizingRealm {
 	}
 	
 }
+
+
+
+

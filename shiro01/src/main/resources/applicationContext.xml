@@ -108,9 +108,11 @@
 		<property name="realm" ref="myRealm" />
 		<!-- 缓存管理器 -->
 		<property name="cacheManager" ref="cacheManager"/>
+  		<property name="sessionManager" ref="sessionManager"/>
 	</bean>
 <!-- 	自定义Realm -->
 	<bean id="myRealm" class="com.shiro.realm.MyRealm" >
+	 	 <!-- 依赖凭证匹配器 -->
 	 	<property name="credentialsMatcher"> 
 	 		<bean class="org.apache.shiro.authc.credential.HashedCredentialsMatcher"> 
 		 	<!-- 加密的方式 --> 
@@ -119,6 +121,14 @@
 			 <property name="hashIterations" value="1024"/> 
 			 </bean> 
 	 	</property>
+	 	 <!--启用缓存，默认关闭-->
+        <property name="cachingEnabled" value="true"/>
+        <!--启用身份验证缓存，即缓存AuthenticationInfo，默认false-->
+        <property name="authenticationCachingEnabled" value="true"/>
+        <property name="authenticationCacheName" value="authenticationCache"/>
+        <!--启用授权缓存，即缓存AuthorizationInfo的信息，默认为false-->
+        <property name="authorizationCachingEnabled" value="true"/>
+        <property name="authorizationCacheName" value="authorizationCache"/>	 	
 	 </bean> 
 
 
@@ -126,6 +136,35 @@
 	<bean id="cacheManager" class="org.apache.shiro.cache.ehcache.EhCacheManager">
 		<property name="cacheManagerConfigFile" value="classpath:shiro-ehcache.xml" />
 	</bean>
+
+	<!-- 定义会话管理器的操作 -->
+ 	<bean id="sessionManager" class="org.apache.shiro.web.session.mgt.DefaultWebSessionManager"> 
+ 	   <!--删除在session过期时跳转页面时自动在URL中添加JSESSIONID-->
+        <property name="sessionIdUrlRewritingEnabled" value="false" /> 	
+		<!-- 定义的是全局的session会话超时时间，此操作会覆盖web.xml文件中的超时时间配置 -->
+		<property name="globalSessionTimeout" value="1000000" />
+		<!-- 删除所有无效的Session对象，此时的session被保存在了内存里面 -->
+		<property name="deleteInvalidSessions" value="true" /> 
+		<!-- 定义要使用的无效的Session定时调度器 -->
+	<!-- 	<property name="sessionValidationScheduler" ref="sessionValidationScheduler" />  -->
+		<!-- 需要让此session可以使用该定时调度器进行检测 -->
+	<!-- 	<property name="sessionValidationSchedulerEnabled" value="true" /> -->
+		 <!-- 定义Session可以进行序列化的工具类 -->
+		<property name="sessionDAO" ref="sessionDAO" /> 
+		 <!-- 定义sessionIdCookie模版可以进行操作的启用 -->
+		<!-- <property name="sessionIdCookieEnabled" value="true" /> -->
+	</bean> 
+
+	<!-- 配置Session DAO的操作处理 -->
+ 	<bean id="sessionDAO" class="org.apache.shiro.session.mgt.eis.EnterpriseCacheSessionDAO"> 
+		<!-- 设置session缓存的名字，这个名字可以任意 -->
+		<property name="activeSessionsCacheName" value="shiro-activeSessionCache" /> 
+		<!-- 定义该Session DAO操作中所使用的ID生成器 -->
+		<property name="sessionIdGenerator" ref="sessionIdGenerator" />
+	</bean>
+
+	<!-- 定义Session ID生成管理器 --> 
+	<bean id="sessionIdGenerator" class="org.apache.shiro.session.mgt.eis.JavaUuidSessionIdGenerator" />
 
 	<!-- Shiro过滤器 -->
 	<bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
@@ -152,18 +191,6 @@
 			</value>
 		</property>
 	</bean>
-
-	<!-- 保证实现了Shiro内部lifecycle函数的bean执行 -->
-	<!-- <bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor" />
- -->
-	<!-- 开启Shiro注解 -->
-<!-- 	<bean class="org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator" depends-on="lifecycleBeanPostProcessor">
-    <property name="proxyTargetClass" value="true" />
-	</bean> -->
-	
-<!-- 	<bean class="org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor">
-	    <property name="securityManager" ref="securityManager"/>
-	</bean> -->
 
 
 </beans>    
