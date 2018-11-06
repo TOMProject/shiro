@@ -28,8 +28,8 @@ $(function(){
 	/**
 	 * 关闭弹出框
 	 */
-	$(".close").click(function(){
-		$("#warningInfo").toggle(200);
+	$("#close").click(function(){
+		$("#warningInfo").hide(200);
 	})
 
 	/**
@@ -205,7 +205,7 @@ function  warningInfo(dataObject){
 
 function message(msg){
 	$("#showWarningInfo").text("警告！："+msg)
-	$("#warningInfo").toggle(200);
+	$("#warningInfo").show(200);
 	
 }
 
