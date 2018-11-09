@@ -51,7 +51,11 @@ img {
 	display: inline-block;
 	color:red;
 }
-
+label.error{
+        padding-left: 16px;
+        color: red;
+        font-size:15px;
+    }
 
 </style>
 
@@ -150,7 +154,7 @@ img {
 						 <label for="lastname" class="col-sm-2 control-label">角&nbsp;&nbsp;&nbsp;&nbsp;色：</label>
 						 <div class="col-sm-10">
 						   <p id ="star">*</p>
-							<select id="role" class="form-control">
+							<select id="role" class="form-control" name="role">
 								
 							</select>
 					    </div>
@@ -190,7 +194,7 @@ img {
 					  <div class="form-group">
 					    <label for="firstname" class="col-sm-2 control-label">真实姓名：</label>
 					    <div class="col-sm-10">
-					      <input type="text" id="updateReallyName" class="form-control" placeholder="请输入真实姓名" name="name" />
+					      <input type="text" id="updateReallyName" class="form-control" placeholder="请输入真实姓名" name="reallyname" />
 					    	
 					    </div>
 					  </div>
@@ -198,7 +202,7 @@ img {
 					  <div class="form-group">
 					    <label for="firstname" class="col-sm-2 control-label">账户名：</label>
 					    <div class="col-sm-10">
-					      <input type="text"  id="updateUserName" class="form-control" placeholder="请输入账户名" name="name" />
+					      <input type="text"  id="updateUserName" class="form-control" placeholder="请输入账户名" name="username" />
 					    </div>
 					  </div>
 					  
@@ -212,7 +216,7 @@ img {
 					  <div class="form-group">
 						 <label for="lastname" class="col-sm-2 control-label">角&nbsp;&nbsp;&nbsp;&nbsp;色：</label>
 						 <div class="col-sm-10">
-							<select id="updateRole" class="form-control">
+							<select id="updateRole" class="form-control" name ="role">
 								
 							</select>
 					    </div>
@@ -221,13 +225,13 @@ img {
 					 <div class="form-group">
 					    <label for="firstname"  class="col-sm-2 control-label">电话号码：</label>
 					    <div class="col-sm-10">
-					      <input type="text" id="updatePhone" class="form-control" placeholder="请输入电话号码" name="name" />
+					      <input type="text" id="updatePhone" class="form-control" placeholder="请输入电话号码" name="phone" />
 					    </div>
 					  </div>
 					  
 					   <div class="modal-footer">
 			                <button type="button" class="btn btn-primary" data-dismiss="modal">取消</button>
-			                <button type="button" id="updateUser" class="btn btn-primary">保存</button>
+			                <button type="button" id="saveUpdateUser" class="btn btn-primary">保存</button>
 			           </div>
 					</form>
 						
@@ -237,10 +241,6 @@ img {
 	</div>
 	<!-- /.modal -->
 
-
-
-
-	
     <div id="warningInfo" class="alert alert-warning alert-dismissable" >
            <button type="button" class="close" id="close">
                &times;

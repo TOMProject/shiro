@@ -4,14 +4,15 @@ $(function(){
 	 * 初始用户页面调用的请求
 	 */
 	initPaging({})
-	
 	/**
 	 * 点击查询按钮
 	 */
 	$(".btn").click(function(){
 		var user = {};	
 		getCondition(user)		
-		initPaging(user)	
+		initPaging(user)
+		$(".form-control").removeClass("error");//去掉
+		$(".error").hide();
 	});
 
 	/**
@@ -29,7 +30,6 @@ $(function(){
 	 * 关闭弹出框
 	 */
 	$("#close").click(function(){
-		alert(478);
 		$("#warningInfo").hide(200);
 	})
 	/**
@@ -60,6 +60,8 @@ $(function(){
 	/**
 	 * 点击修改按钮
 	 */
+	//全局的返回user的对象的id;
+	var id = -1;
 	$("#updateUser").click(function(){
 		var updateId = new Array();
 		$(".mycheck").each(function () {//循环店铺里面的商品
@@ -84,16 +86,53 @@ $(function(){
 		$("#updateUserName").val(user.userName);
 		$("#updatePhone").val(user.phone);
 		$("#updatePassWord").val(user.passWord);
-		$("#updateRole").append("<option value=''>"+user.roleName+"</option>");
+		$("#updateRole").empty();//清除旧的数据
+		$("#updateRole").append("<option value="+user.roleId+">"+user.roleName+"</option>");
 		$('#updateUserModal').modal('show');
-
+		id = user.id;//设置userid
 	});
-	var pageCount = -1;
+	/**
+	 * 点击保存修改
+	 */
+	$("#saveUpdateUser").click(function(){
+		
+		if(! $("#updateuserform").valid()){
+			return;
+		}
+		var user = getUpdateValue();
+			user.id = id;
+		updateUser(user);	
+	})
 	
-	$("#adduserform").validate({
+	
+	
+	/**
+	 * jquery。validator 验证表单提交。
+	 */
+	jQuery.validator.addMethod("chinese",function(value,element){
+		var chinese = /^[\u4e00-\u9fa5]+$/;
+		return this.optional(element)||(chinese.test(value));
+	},"只能输入中文！");
+	//规则名：byteRangeLength，value检测对像的值，element检测的对像,param参数  
+    jQuery.validator.addMethod("byteRangeLength", function(value, element, param) {  
+        var length = value.length;  
+       // alert(length);
+        for (var i = 0; i < value.length; i++) {  
+            if (value.charCodeAt(i) > 127) {  
+                length++;  
+            }  
+        }  
+        return this.optional(element) || (length >= param[0] && length <= param[1]);  
+    }, $.validator.format("请确保输入的值在{4}-{8}个字节之间(一个中文字算2个字节)"));  
+
+	valid={
 		debug:true,
 		rules:{
-			reallyname:"required",
+			reallyname:{
+				required:true,
+				chinese:true,//自定义验证规则
+				byteRangeLength:[4,8] //判断字节的长度
+			},
 			username:"required",
 			password:{
 				required:true,
@@ -101,11 +140,17 @@ $(function(){
 			},
 			phone:{
 				required:true,
-				digits:true
+				digits:true //验证是整数
+			},
+			role:{
+				required:true,
 			}
+			
 		},
 		messages:{
-			reallyname:"请输入真实姓名！",
+			reallyname:{
+				required:"请输入真实姓名！",
+			},
 			username:"请输入用户名！",
 			password:{
 				required:"请输入密码！",
@@ -114,12 +159,15 @@ $(function(){
 			phone:{
 				requird:"电话号码必填！",
 				digits:"输入必须是整数"
+			},
+			role:{
+				required:"请选择角色！",
 			}
 		}
-		
-	})
+	}
 	
-	
+	$("#adduserform").validate(valid);
+	$("#updateuserform").validate(valid);
 	
 });
 
@@ -178,13 +226,44 @@ function selectListRole(role){
 			  str=str+ "<option value="+"'"+roleObject.data[i].id+"'"+">"+roleObject.data[i].roleName+"</option>"			  		
 		  }
 		  $("#role").empty();
-		  $("#role").append(str);
+		  $("#role").append("<option value=''>---请选择---</option>"+str);
 	  }
   });
 
 }
-
-function saveUser(){
+/**
+ * 获取去修改用户input标签里面的值
+ * @returns
+ */
+function getUpdateValue(){
+	var reallyName = $("#updateReallyName").val();
+	var userName = $("#updateUserName").val();
+	var passWord = $("#updatePassWord").val();
+	var roleId = $("#updateRole").val();
+	var phone = $("#updatePhone").val();
+	var user ={};
+	if(reallyName != ""){
+		user.reallyName = reallyName;
+	}
+	if(userName != ""){
+		user.userName = userName;
+	}
+	if(passWord != ""){
+		user.passWord=passWord;
+	}
+	if(role != ""){
+		user.roleId = roleId;
+	}
+	if(phone != ""){
+		user.phone=phone;
+	}	
+	return user;
+}
+/**
+ * 获取去添加用户input标签里面的值
+ * @returns
+ */
+function getAddValue(){
 	var reallyName = $("#reallyName").val();
 	var userName = $("#userName").val();
 	var passWord = $("#passWord").val();
@@ -205,8 +284,12 @@ function saveUser(){
 	}
 	if(phone != ""){
 		user.phone=phone;
-	}
-	
+	}	
+	return user;
+}
+
+function saveUser(){
+	var user = getAddValue();	
 	var json = JSON.stringify(user);
 	$.ajax({
 		type:"POST",
@@ -214,7 +297,6 @@ function saveUser(){
 		data:json,
 		contentType:"application/json",
 		success:function(mydata){
-			console.log(mydata);
 			var object = JSON.parse(mydata);
 			var status = warningInfo(object);
 			if(status == false){
@@ -227,6 +309,33 @@ function saveUser(){
 	});
 	
 }
+/**
+ * 修改用户api
+ * @param user
+ * @returns
+ */
+function updateUser(user){	
+	var json = JSON.stringify(user);
+	console.log(json);
+	$.ajax({
+		type:"POST",
+		url:"../../user/updataUser",
+		data:json,
+		contentType:"application/json",
+		success:function(mydata){
+			console.log(mydata);
+			var object = JSON.parse(mydata);
+			var status = warningInfo(object);
+			if(status == false){
+				return;
+			}
+			if(object.code == "0000"){
+				$('#addUserModal').modal("hide")
+			} 
+		}
+	})
+}
+
 
 /**
  * 异常提示框

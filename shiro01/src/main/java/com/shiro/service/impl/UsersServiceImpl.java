@@ -64,4 +64,9 @@ public class UsersServiceImpl implements UsersService {
 	
 	}
 
+	@Override
+	public void updateSelectiveById(Users user) {
+		usersMapper.updateSelectiveById(user);
+	}
+
 }

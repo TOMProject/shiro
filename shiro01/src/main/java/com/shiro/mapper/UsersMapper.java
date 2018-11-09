@@ -24,4 +24,9 @@ public interface UsersMapper {
 	 * @param user
 	 */
 	void insertSelective(Users user);
+	/**
+	 * 修改用户
+	 * @param user
+	 */
+	void updateSelectiveById(Users user);
 }

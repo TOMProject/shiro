@@ -22,4 +22,9 @@ public interface UsersService {
 	 * @param user
 	 */
 	void addUser(Users user);
+	/**
+	 * 修改用户
+	 * @param user
+	 */
+	void updateSelectiveById(Users user);
 }

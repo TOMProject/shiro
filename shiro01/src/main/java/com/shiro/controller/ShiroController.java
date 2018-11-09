@@ -90,8 +90,25 @@ public class ShiroController {
 		return ajaxResponse;
 		
 	}
-	
-	
+	@RequestMapping(value="updataUser",method=RequestMethod.POST)
+	@RequiresPermissions("user:updateUser")
+	@ResponseBody
+	public AjaxResponse<Object> updateUser(@RequestBody Users user){
+		AjaxResponse<Object> ajaxResponse = new AjaxResponse<Object>(Constant.RS_CODE_ERROR,"修改用户失败！");
+		try {
+			UsersSer.updateSelectiveById(user);
+			ajaxResponse.setCode(Constant.RS_CODE_SUCCESS);
+			ajaxResponse.setMsg("修改用户成功！");
+		} catch (Exception e) {
+			e.printStackTrace();
+			return ajaxResponse;
+		}
+		return ajaxResponse;
+				
+		
+		
+		
+	}
 	
 	
 	
