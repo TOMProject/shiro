@@ -29,9 +29,16 @@ $(function(){
 	 * 关闭弹出框
 	 */
 	$("#close").click(function(){
+		alert(478);
 		$("#warningInfo").hide(200);
 	})
-
+	/**
+	 * 关闭模态框
+	 */
+	$(".close").click(function(){
+		$(".form-control").removeClass("error");//去掉
+		$(".error").hide();
+	})
 	/**
 	 * 当点击添加用户时候执行
 	 */
@@ -44,6 +51,9 @@ $(function(){
 	 * 点击保存用户的时候
 	 */
 	$("#saveUser").click(function(){
+		if(! $("#adduserform").valid()){
+			return;
+		}
 		saveUser();
 	})
 
@@ -79,6 +89,35 @@ $(function(){
 
 	});
 	var pageCount = -1;
+	
+	$("#adduserform").validate({
+		debug:true,
+		rules:{
+			reallyname:"required",
+			username:"required",
+			password:{
+				required:true,
+				minlength:6
+			},
+			phone:{
+				required:true,
+				digits:true
+			}
+		},
+		messages:{
+			reallyname:"请输入真实姓名！",
+			username:"请输入用户名！",
+			password:{
+				required:"请输入密码！",
+				minlength:"最小长度不低于六位！"	
+			},
+			phone:{
+				requird:"电话号码必填！",
+				digits:"输入必须是整数"
+			}
+		}
+		
+	})
 	
 	
 	
