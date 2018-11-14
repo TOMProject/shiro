@@ -6,10 +6,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
-import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
@@ -19,15 +17,14 @@ import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.crypto.hash.SimpleHash;
 import org.apache.shiro.realm.AuthorizingRealm;
-import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.util.ByteSource;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.shiro.entity.Permission;
+import com.shiro.entity.Menu;
 import com.shiro.entity.Role;
 import com.shiro.entity.Users;
-import com.shiro.service.PermissionService;
+import com.shiro.service.MenuService;
 import com.shiro.service.RoleService;
 import com.shiro.service.UsersService;
 /**
@@ -42,7 +39,7 @@ public class MyRealm extends AuthorizingRealm {
 	@Autowired
 	RoleService roleSer;
 	@Autowired
-	PermissionService permissionSer;
+	MenuService menuSer;
 
 	public  static final String SESSION_KEY	= "session_key";
 	/**
@@ -60,11 +57,11 @@ public class MyRealm extends AuthorizingRealm {
 		
 		Set<String> roleNames = roles.stream().map(Role :: getRoleName).collect(Collectors.toSet());
 		simpleAuthorizationInfo.setRoles(roleNames);
-		List<Permission> permissions = permissionSer.selectPermissionByUserName(userName);
+		List<Menu> menus = menuSer.selectMenuPermissionByUserName(userName);
 		Set<String> permissionSet = new HashSet<String>();
-		for (Permission per : permissions) {
-			if (per.getPerms() != null) {
-				permissionSet.addAll(Arrays.asList(per.getPerms().split(",")));
+		for (Menu m : menus) {
+			if (m != null && m.getPermission() != null) {
+				permissionSet.addAll(Arrays.asList(m.getPermission().split(",")));
 			}
 		}
 		simpleAuthorizationInfo.setStringPermissions(permissionSet);
