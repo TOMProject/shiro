@@ -11,6 +11,16 @@ public interface MenuMapper {
 	 * @return
 	 */
 	List<Menu> selectMenuPermissionByUserName(String userName);
+	/**
+	 * 查询所有的菜单
+	 * @return
+	 */
+	List<Menu> selectMenu();
+	/**
+	 * 添加用户
+	 * @param menu
+	 */
+	void insertSelective(Menu menu);
 	
 }
 

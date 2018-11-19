@@ -1,6 +1,6 @@
 package com.shiro.entity;
 
-import java.sql.Date;
+import java.util.Date;
 
 /**
  * 菜单管理

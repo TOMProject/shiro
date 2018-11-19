@@ -26,6 +26,51 @@
 		where u.username=#{username,jdbcType=VARCHAR}
 	</select>
 	
+	<select id="selectMenu" resultMap="BaseResultMap" parameterType="com.shiro.entity.Menu">
+		select * from menu
+	</select>
+	
+	<insert id="insertSelective" parameterType="com.shiro.entity.Menu">
+		insert into menu
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="parentId != null">
+				parent_id,
+			</if>
+			<if test="menuName != null">
+				menu_name,
+			</if>
+			<if test="menuType != null">
+				menu_type,
+			</if>
+			<if test="permission != null">
+				permission,
+			</if>
+			<if test="createTime != null">
+				create_time,
+			</if>
+				
+		</trim>
+		
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="parentId != null">
+				#{parentId,jdbcType=INTEGER},
+			</if>
+			<if test="menuName != null">
+				#{menuName,jdbcType=VARCHAR},
+			</if>
+			<if test="menuType != null">
+				#{menuType,jdbcType=INTEGER},
+			</if>
+			<if test="permission != null">
+				#{permission,jdbcType=VARCHAR},
+			</if>
+			<if test="createTime != null">
+				#{createTime,jdbcType=TIMESTAMP},
+			</if>
+		</trim>
+	
+	
+	</insert>
 	
 	
 	

@@ -1,19 +1,45 @@
 
 
+var $addMenuForm=$("#addMenuform");
+
+
 $(function(){
+	console.log("菜单")
 	createMenuTree();
 	
 	
-})
+	/**
+	 * 保存菜单
+	 * @returns
+	 */
+	$("#saveMenu").click(function(){
+		console.log($("#menuName").val());
+
+
+	})
+	
+});
+
+
+
+
+
+
+
+
 
 $("#addMenuModel").click(function(){
-	$('#addUserModal').modal("show")
+	$('#addMenuform').modal("show")
 })
 	
 function createMenuTree() {
-    $.post(ctx + "menu/tree", {}, function (r) {
-        if (r.code === 0) {
-            var data = r.msg;
+    $.post("../../menu/tree", {}, function (r) {
+    	 var r=JSON.parse(r);
+    	
+        if (r.code == "0000") {
+            var data = r.data;
+            console.log(data);
+            
             $('#menuTree').jstree({
                 "core": {
                     'data': data.children,
@@ -28,7 +54,7 @@ function createMenuTree() {
                 "plugins": ["wholerow", "checkbox"]
             });
         } else {
-            $MB.n_danger(r.msg);
+           console.log("异常！--》"+r)
         }
     })
 
