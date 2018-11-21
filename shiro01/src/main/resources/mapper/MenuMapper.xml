@@ -30,6 +30,21 @@
 		select * from menu
 	</select>
 	
+	<select id="selectMenuSelective" resultMap="BaseResultMap" parameterType="com.shiro.entity.Menu">
+		select * from menu
+		<where>
+			<if test="menuName != null">
+				and menu_name = #{menuName,jdbcType=VARCHAR}
+			</if>
+			<if test="menuType != null">
+				and menu_type = #{menuType,jdbcType=INTEGER}
+			</if>
+			<if test="permission != null">
+				and permission = #{permission,jdbcType=VARCHAR}
+			</if>
+		</where>	
+	</select>
+	
 	<insert id="insertSelective" parameterType="com.shiro.entity.Menu">
 		insert into menu
 		<trim prefix="(" suffix=")" suffixOverrides=",">

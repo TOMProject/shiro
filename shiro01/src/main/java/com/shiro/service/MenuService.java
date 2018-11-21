@@ -22,5 +22,11 @@ public interface MenuService {
 	 * @param menu
 	 */
 	void insertSelective(Menu menu);
+	/**
+	 * 
+	 * @param menu
+	 * @return
+	 */
+	List<Menu> selectMenuSelective(Menu menu);
 	
 }

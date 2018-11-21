@@ -44,10 +44,16 @@ public class MenuServiceImpl implements MenuService {
 	@Override
 	public void insertSelective(Menu menu) {
 		menu.setCreateTime(new Date());
-		if(menu.getParentId() != null) {
+		if(menu.getParentId() == null) {
 			menu.setParentId(0);
 		}
 		menuMapper.insertSelective(menu);
+	}
+
+	@Override
+	public List<Menu> selectMenuSelective(Menu menu) {
+		
+		return menuMapper.selectMenuSelective(menu);
 	}
 
 }
